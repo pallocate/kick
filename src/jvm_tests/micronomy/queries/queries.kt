@@ -26,7 +26,7 @@ val ROLES = Query {
    sign( Admin.crypto )
 }
 
-val GROCERY_DETAILS = Query {
+val STORE_DETAILS = Query {
    payload {
       getAccountDetail {
          accountId = "hardware@supplier"

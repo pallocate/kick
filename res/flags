@@ -1,5 +1,5 @@
 -overwrite_ledger=true
--genesis_block=projects/project3/genesis-block.asciipb
--dbpath=/home/u1/iroha/db
+-genesis_block=genesis-block.asciipb
+-dbpath=iroha/db
 -torii_host=localhost
 -verbosity=warning
