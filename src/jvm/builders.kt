@@ -26,9 +26,9 @@ fun Transaction.Builder.sign (crypto : KCrypto) = addSignatures(signs( payload.t
 
 internal fun signs (bytes : ByteArray, crypto : KCrypto) : Signature
 {
-   val ed25519Sha3 = crypto.ed25519Sha3()
-   val publicKey = ed25519Sha3.publicKey().toHex()
-   val signature = ed25519Sha3.prove( bytes ).toHex()
+   val pkSignatures = crypto.pkSignatures()
+   val publicKey = pkSignatures.publicKey().toHex()
+   val signature = pkSignatures.prove( bytes ).toHex()
 
    return Signature
       .newBuilder()
