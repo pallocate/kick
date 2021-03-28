@@ -2,7 +2,7 @@ package kick.tests.dumpserver
 
 import io.grpc.ServerBuilder
 
-class KDumpServer
+object Main
 {
    val server = ServerBuilder
       .forPort( 50051 )
@@ -12,7 +12,8 @@ class KDumpServer
       .build()
       .start()
 
-   init
+   @JvmStatic
+   fun main (args : Array<String>)
    {
       Runtime.getRuntime().addShutdownHook(Thread() { server.shutdown() })
       server.awaitTermination()

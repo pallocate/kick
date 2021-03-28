@@ -1,6 +1,7 @@
 package kick
 
 import io.grpc.ManagedChannelBuilder
+import iroha.protocol.CommandService_v1Grpc
 import iroha.protocol.CommandService_v1CoroutineGrpc as CommandService
 import iroha.protocol.QueryService_v1CoroutineGrpc as QueryService
 
@@ -15,4 +16,3 @@ object Stubs
    val commandStub by lazy {CommandService.newStub( managedChannel )}
    val queryStub by lazy {QueryService.newStub( managedChannel )}
 }
-

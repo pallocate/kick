@@ -13,66 +13,13 @@ object DumpCommandService : CommandServiceImplBase()
 {
    override suspend fun torii (request : Transaction) : Empty
    {
-      /* Payload */
-      if (request.hasPayload())
-      {
-         val payload = request.getPayload()
-
-         /* BatchMeta */
-         if (payload.hasBatch())
-         {
-            val batchMeta = payload.getBatch()
-            println( "\nBatchMeta:" )
-            println( "{ type: ${batchMeta.getType()} }" )
-
-            val reducedHashes = batchMeta.getReducedHashesList()
-            if (reducedHashes.size > 0)
-            {
-               print( "\nReduced hashes:\n{" )
-               for (reducedHash in reducedHashes)
-                  print( " $reducedHash," )
-               println( "\b }" )
-            }
-         }
-
-         /* ReducedPayload */
-         if (payload.hasReducedPayload())
-         {
-            val reducedPayload = payload.getReducedPayload()
-            println( "\nReduced payload:" )
-            print( "{ creator: \"${reducedPayload.getCreatorAccountId()}\", " )
-            println( "time: ${reducedPayload.getCreatedTime()}s }" )
-
-
-
-            /* Commands */
-            val commands = reducedPayload.getCommandsList()
-            if (commands.size > 0)
-            {
-               println( "\nCommands:" )
-               for (command in commands)
-                  println( "$command" )
-            }
-
-
-         }
-      }
-
-      /* Signatures */
-      val signatures = request.getSignaturesList()
-      if (signatures.size > 0)
-      {
-         println( "\nSignatures:" )
-         for (signature in signatures)
-            println( "$signature" )
-      }
-
+      println( request ) 
       return Empty.newBuilder().build()
    }
 
    override suspend fun listTorii (request : TxList) : Empty
    {
-      println( "listTorii called" )
+      println( request )
       return Empty.newBuilder().build()
    }
 
@@ -92,12 +39,12 @@ object DumpCommandService : CommandServiceImplBase()
 
       responseChannel.send {
          txHash = hash
-         txStatus = TxStatus.STATEFUL_VALIDATION_FAILED                         // STATEFUL_VALIDATION_SUCCESS
+         txStatus = TxStatus.STATEFUL_VALIDATION_SUCCESS                        // STATEFUL_VALIDATION_FAILED 
       }
 
       responseChannel.send {
          txHash = hash
-         txStatus = TxStatus.REJECTED                                           // COMMITTED
+         txStatus = TxStatus.COMMITTED                                          // REJECTED 
       }
    }
 }

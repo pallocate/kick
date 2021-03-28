@@ -12,11 +12,13 @@ object DumpQueryService : QueryServiceImplBase()
 {
    override suspend fun find (request : Query) : QueryResponse
    {
+      println( request )
       return QueryResponse.newBuilder().build()
    }
 
    override suspend fun fetchCommits (request : BlocksQuery, responseChannel : SendChannel<BlockQueryResponse>)
    {
+      println( request )
       responseChannel.send {
          blockErrorResponse = BlockErrorResponse.newBuilder().build()
       }
