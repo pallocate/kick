@@ -1,5 +1,6 @@
 package kick
 
+import pen.newScope
 import kotlinx.coroutines.*
 import iroha.protocol.Endpoint.TxList
 import iroha.protocol.TxList as txList

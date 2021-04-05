@@ -42,5 +42,3 @@ suspend fun statusRequest (txHash : String) : ReceiveChannel<ToriiResponse>
    val txStatusRequest = TxStatusRequest { this.txHash = txHash }
    return Stubs.commandStub.statusStream( txStatusRequest )
 }
-
-internal fun newScope () = CoroutineScope(CoroutineName( name = (pen.now()-1616336000000L).toString() ))

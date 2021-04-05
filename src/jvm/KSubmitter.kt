@@ -1,5 +1,6 @@
 package kick
 
+import pen.newScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import iroha.protocol.Queries.Query
