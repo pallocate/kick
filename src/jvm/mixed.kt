@@ -11,22 +11,42 @@ import iroha.protocol.TxStatusRequest
 
 /** Pair of transactions. Where the first should be committed before the second. */
 typealias TxPair = Pair<Transaction, Transaction>
-typealias TxTriple = Triple<Transaction, Transaction, Transaction>
 
 interface Textable
 { fun text (string : String) }
 object VoidTextable : Textable
 { override fun text (string : String) {} }
 
-/* Texts failed transaction response messages to UI. */
-internal suspend fun textUI (response : ToriiResponse, textable : Textable) {
+@kotlinx.coroutines.ExperimentalCoroutinesApi
+suspend fun commitAndText (transaction : Transaction, textable : Textable) : Boolean
+{
+   var success = true
+   Stubs.commandStub.torii( transaction )                                       // Send transaction to the block chain
+   yield()
 
-   if (response.errorCode > 0 && textable !is VoidTextable)
-      runBlocking {  //withContext( Dispatchers.Main ) {
+   val responseChannel = statusRequest( transaction.hash() )                    // Do a status request
+   responseChannel.consumeEach { response ->
+
+      if (response.errorCode > 0)
+      {
+         yield()
+         textError( response, textable )                                        // Text errors to UI
+         success = false
+      }
+    }
+
+   return success
+}
+
+/* Texts failed transaction response messages to UI. */
+internal suspend fun textError (response : ToriiResponse, textable : Textable) {
+
+   if (textable !is VoidTextable)
+   {
+      runBlocking {
 
          val status = response.txStatus
             .toString()
-//            .toLowerCase()
             .replace( '_', ' ' )
 
          textable.text( status + if (status.contains( "FAILED" ))
@@ -35,6 +55,7 @@ internal suspend fun textUI (response : ToriiResponse, textable : Textable) {
                ""
          )
       }
+   }
 }
 
 suspend fun statusRequest (txHash : String) : ReceiveChannel<ToriiResponse>

@@ -4,48 +4,42 @@ import pen.newScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import iroha.protocol.TransactionOuterClass.Transaction
+import iroha.protocol.Endpoint.TxList
 
-class KCommiter (var textable : Textable = VoidTextable)
+class KCommiter ()
 {
    private var scope = newScope()
 
    @kotlinx.coroutines.ExperimentalCoroutinesApi
-   fun commit (tx : Transaction)
+   fun commit (transaction : Transaction, textable : Textable = VoidTextable)
    {
       if (!scope.isActive)
          scope = newScope()
 
       scope.launch( Dispatchers.IO ) {
-         commitAndText( tx )
+         commitAndText( transaction, textable )
       }
    }
 
    @kotlinx.coroutines.ExperimentalCoroutinesApi
-   fun commit (txPair : TxPair)
+   fun commit (txPair : TxPair, textable : Textable = VoidTextable)
    {
       if (!scope.isActive)
          scope = newScope()
 
       scope.launch( Dispatchers.IO ) {
-         commitAndText( txPair.first )
-         commitAndText( txPair.second )
+         commitAndText( txPair.first, textable )
+         commitAndText( txPair.second, textable )
       }
    }
 
-   @kotlinx.coroutines.ExperimentalCoroutinesApi
-   private suspend fun commitAndText (tx : Transaction)
+   fun commit (txl : TxList)
    {
-      Stubs.commandStub.torii( tx )                                             // Commit transaction
-      yield()
+      if (!scope.isActive)
+         scope = newScope()
 
-      if (textable !is VoidTextable)
-      {
-         val responseChannel = statusRequest( tx.hash() )                       // Do a status request
-         responseChannel.consumeEach {
-
-            textUI( it, textable )                                              // Text responses to UI
-            yield()
-         }
+      scope.launch( Dispatchers.IO ) {
+         Stubs.commandStub.listTorii( txl )
       }
    }
 
