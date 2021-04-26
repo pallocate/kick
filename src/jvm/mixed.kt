@@ -43,7 +43,7 @@ internal suspend fun textError (response : ToriiResponse, textable : Textable) {
 
    if (textable !is VoidTextable)
    {
-      runBlocking {
+      runBlocking {  //withContext( Dispatchers.Default ) {
 
          val status = response.txStatus
             .toString()

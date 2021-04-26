@@ -16,7 +16,7 @@ class KSetuper ()
       scope.launch( Dispatchers.IO ) {
          val accountsCreated = commitAndText( createAccounts, VoidTextable )
          yield()
-         
+
          if (accountsCreated)
          {
             val txl1 = txList { addAllTransactions(txPairs.map { it.first }) }
@@ -26,8 +26,6 @@ class KSetuper ()
             Stubs.commandStub.listTorii( txl2 )
          }
       }
-
-//runBlocking {ret = withContext( Dispatchers.Default ) {commitAndText( tx )}}
    }
 
    fun cancel () = scope.cancel()

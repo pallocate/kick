@@ -13,7 +13,7 @@ object DumpCommandService : CommandServiceImplBase()
 {
    override suspend fun torii (request : Transaction) : Empty
    {
-      println( request ) 
+      println( request )
       return Empty.newBuilder().build()
    }
 
@@ -25,7 +25,7 @@ object DumpCommandService : CommandServiceImplBase()
 
    override suspend fun status (request : TxStatusRequest) : ToriiResponse
    {
-      return ToriiResponse.newBuilder().setTxHash( request.getTxHash() ).setTxStatus( TxStatus.STATELESS_VALIDATION_FAILED ).build()
+      return ToriiResponse.newBuilder().setTxHash( request.getTxHash() ).setTxStatus( TxStatus.STATEFUL_VALIDATION_SUCCESS ).build()
    }
 
    override suspend fun statusStream (request : TxStatusRequest, responseChannel : SendChannel<ToriiResponse>)
@@ -39,12 +39,12 @@ object DumpCommandService : CommandServiceImplBase()
 
       responseChannel.send {
          txHash = hash
-         txStatus = TxStatus.STATEFUL_VALIDATION_SUCCESS                        // STATEFUL_VALIDATION_FAILED 
+         txStatus = TxStatus.STATEFUL_VALIDATION_SUCCESS                        // STATEFUL_VALIDATION_FAILED
       }
 
       responseChannel.send {
          txHash = hash
-         txStatus = TxStatus.COMMITTED                                          // REJECTED 
+         txStatus = TxStatus.COMMITTED                                          // REJECTED
       }
    }
 }
