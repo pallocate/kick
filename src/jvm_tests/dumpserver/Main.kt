@@ -6,8 +6,8 @@ object Main
 {
    val server = ServerBuilder
       .forPort( 50051 )
-      .addService( DumpCommandService )
       .addService( DumpQueryService )
+      .addService( DumpCommandService )
       .directExecutor()
       .build()
       .start()

@@ -28,5 +28,12 @@ class KSetuper ()
       }
    }
 
+   fun commitBlocking (tx : Transaction, textable : Textable = VoidTextable)
+   {
+      runBlocking {
+         commitAndText( tx, textable )
+      }
+   }
+   
    fun cancel () = scope.cancel()
 }
