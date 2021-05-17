@@ -7,17 +7,30 @@ import iroha.protocol.Queries.Query
 import iroha.protocol.Queries.BlocksQuery
 import iroha.protocol.QryResponses.QueryResponse
 
-class KSubmitter (var textable : Textable = VoidTextable)
+sealed class Submitable
+class KQuery (val query : Query) : Submitable () {}
+class KBlocksQuery (val blocksQuery : BlocksQuery) : Submitable () {}
+
+class KSubmiter ()
 {
    private var scope = newScope()
    private val PRE = "<html><head><style>p { 'color:black;' }</style></head><body>"
    private val POST = "</body></html>"
 
-   fun submit (query : Query)
+   fun submit (submitable : Submitable, textable : Textable = VoidTextable)
    {
       if (!scope.isActive)
          scope = newScope()
 
+      when (submitable)
+      {
+         is KQuery -> submit( submitable.query, textable )
+         is KBlocksQuery -> submit( submitable.blocksQuery, textable )
+      }
+   }
+
+   fun submit (query : Query, textable : Textable = VoidTextable)
+   {
       scope.launch( Dispatchers.IO ) {
 
          val queryResponse = async {Stubs.queryStub.find( query )}.await()
@@ -28,17 +41,18 @@ class KSubmitter (var textable : Textable = VoidTextable)
    }
 
    @ExperimentalCoroutinesApi
-   suspend fun submit (blocksQuery : BlocksQuery)
+   fun submit (blocksQuery : BlocksQuery, textable : Textable = VoidTextable)
    {
-      val responseChannel = Stubs.queryStub.fetchCommits( blocksQuery )
-      responseChannel.consumeEach {println( it.toString() )}
+      scope.launch( Dispatchers.IO ) {
+         val responseChannel = Stubs.queryStub.fetchCommits( blocksQuery )
+         responseChannel.consumeEach {println( it.toString() )}
+      }
    }
-
 
    fun htmlResponse (response : QueryResponse?) : String
    {
       var ret = ""
-      
+
       if (response != null)
       {
          ret = PRE
@@ -58,7 +72,7 @@ class KSubmitter (var textable : Textable = VoidTextable)
                {
                   val aar = accountAssetsResponse
                   val accountAssetList = aar.accountAssetsList.forEach {
-                     ret += "<p style='color:rgb(41,38,0);'>${it.assetId}:</p><p style='color:rgb(41,38,0);'>${it.balance}</p>" 
+                     ret += "<p style='color:rgb(41,38,0);'>${it.assetId}:</p><p style='color:rgb(41,38,0);'>${it.balance}</p>"
                   }
                }
                hasAccountDetailResponse() ->
@@ -69,16 +83,30 @@ class KSubmitter (var textable : Textable = VoidTextable)
                   ret += "<p>signatories:</p><p>$signatoriesList</p>"
                }
 
+               hasTransactionsPageResponse() -> {
+                  val transactionsList = transactionsPageResponse.transactionsList
+                  for (txNum in 0 until transactionsList.size)
+                  {
+                     ret += "<p style='color:rgb(0,0,41);'>tx (${txNum})</p>"
+                     if (transactionsList[txNum].hasPayload())
+                     {
+                        val payload = transactionsList[txNum].payload
+                        if (payload.hasReducedPayload())
+                           for (command in payload.reducedPayload.commandsList)
+                              ret += "<p style='color:rgb(125,100,16);'>${command}</p>"
+                     }
+                  }
+               }
                hasErrorResponse() -> {
                   ret += "<p style='color:red;'>${errorResponse.reason}</p><p style='color:red;'>${errorResponse.message}</p>"
                }
                else -> {}
             }
          }
-         
+
          ret += POST
       }
-      
+
       return ret
    }
 

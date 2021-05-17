@@ -8,7 +8,7 @@ import iroha.protocol.TxList
 
 sealed class Commitable
 class KTransaction (val transaction : Transaction) : Commitable () {}
-/** Intended to be used when a second transaction depends on the first. */
+/** Can be used when a second transaction depends on the first to complete. */
 class KTransactionPair (val pair : TxPair) : Commitable () {}
 class KTransactionList (val transactions : List<Transaction>) : Commitable () {}
 
