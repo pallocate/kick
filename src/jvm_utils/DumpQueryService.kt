@@ -1,4 +1,4 @@
-package kick.tests.dumpserver
+package kick.utils
 
 import kotlinx.coroutines.channels.SendChannel
 import iroha.protocol.QueryService_v1CoroutineGrpc.QueryService_v1ImplBase as QueryServiceImplBase
@@ -17,18 +17,18 @@ object DumpQueryService : QueryServiceImplBase()
       {
          when (true)
          {
-            hasGetAccount() -> 
-            {  
+            hasGetAccount() ->
+            {
                queryResponse.setAccountResponse(
-                  AccountResponse.newBuilder().setAccount( 
-                     Account.newBuilder().setJsonData( "{}" ).setDomainId( "bar" ).setAccountId( "foo@bar" ) 
+                  AccountResponse.newBuilder().setAccount(
+                     Account.newBuilder().setJsonData( "{}" ).setDomainId( "bar" ).setAccountId( "foo@bar" )
                   )
                )
             }
-            hasGetAccountAssets() -> 
+            hasGetAccountAssets() ->
             {
                queryResponse.setAccountAssetsResponse(
-                  AccountAssetResponse.newBuilder().addAccountAssets( 
+                  AccountAssetResponse.newBuilder().addAccountAssets(
                      AccountAsset.newBuilder()
                         .setAccountId( "foo@bar" )
                         .setAssetId( "credit#bar" )
@@ -36,16 +36,16 @@ object DumpQueryService : QueryServiceImplBase()
                   )
                )
             }
-            hasGetAccountDetail() -> 
+            hasGetAccountDetail() ->
             {
                queryResponse.setAccountDetailResponse(
-                  AccountDetailResponse.newBuilder().setDetail( "{pk: FFFFFFFF}" )
+                  AccountDetailResponse.newBuilder().setDetail( "{data: FFFFFFFF}" )
                )
             }
-            hasGetSignatories() -> 
+            hasGetSignatories() ->
             {
-               queryResponse.setSignatoriesResponse( 
-               SignatoriesResponse.newBuilder().addKeys( "aaaaaaaaaaaa" )
+               queryResponse.setSignatoriesResponse(
+               SignatoriesResponse.newBuilder().addKeys( "mocksignatory" )
                )
             }
             else -> {}

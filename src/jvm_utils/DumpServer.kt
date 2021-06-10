@@ -1,8 +1,9 @@
-package kick.tests.dumpserver
+package kick.utils
 
 import io.grpc.ServerBuilder
 
-object Main
+/** Dump services to mimic Iroha, for testing purposes. */
+object DumpServer
 {
    val server = ServerBuilder
       .forPort( 50051 )

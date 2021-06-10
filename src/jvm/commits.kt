@@ -12,6 +12,7 @@ class KTransaction (val transaction : Transaction) : Commitable () {}
 class KTransactionPair (val pair : TxPair) : Commitable () {}
 class KTransactionList (val transactions : List<Transaction>) : Commitable () {}
 
+/** Commits transactions to the block chain. */
 class KCommiter ()
 {
    private var scope = newScope()

@@ -5,6 +5,7 @@ import iroha.protocol.CommandService_v1Grpc
 import iroha.protocol.CommandService_v1CoroutineGrpc as CommandService
 import iroha.protocol.QueryService_v1CoroutineGrpc as QueryService
 
+/** GRPC stubs to command and query the Iroha block chain using a managed channel. */
 object Stubs
 {
    private val managedChannel = ManagedChannelBuilder

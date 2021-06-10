@@ -1,4 +1,4 @@
-package kick.tests.dumpserver
+package kick.utils
 
 import kotlinx.coroutines.channels.SendChannel
 import com.google.protobuf.Empty
