@@ -39,7 +39,7 @@ object DumpQueryService : QueryServiceImplBase()
             hasGetAccountDetail() ->
             {
                queryResponse.setAccountDetailResponse(
-                  AccountDetailResponse.newBuilder().setDetail( "{data: FFFFFFFF}" )
+                  AccountDetailResponse.newBuilder().setDetail( "'productList': {'meta': {'type': 'pqMeta', 'year': 2021}, 'products': {}}" )
                )
             }
             hasGetSignatories() ->
