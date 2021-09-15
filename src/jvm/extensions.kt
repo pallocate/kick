@@ -2,7 +2,7 @@ package kick
 
 import pen.toHex
 import pen.sha3Digest
-import pen.IrohaSigner
+import pen.IrohaSignatory
 import iroha.protocol.Commands.Command
 import iroha.protocol.Queries.Query
 import iroha.protocol.Queries.BlocksQuery
@@ -14,22 +14,22 @@ import iroha.protocol.TransactionOuterClass.Transaction
 import iroha.protocol.TransactionOuterClass.Transaction.Payload.ReducedPayload
 import iroha.protocol.BlockOuterClass.Block_v1
 
-fun Query.Builder.sign (irohaSigner : IrohaSigner)
+fun Query.Builder.sign (irohaSignatory : IrohaSignatory)
 {
    if (hasPayload())
-      signature = createSignature( payload.toByteArray(), irohaSigner )
+      signature = createSignature( payload.toByteArray(), irohaSignatory )
 }
 
-fun BlocksQuery.Builder.sign (irohaSigner : IrohaSigner)
+fun BlocksQuery.Builder.sign (irohaSignatory : IrohaSignatory)
 {
    if (hasMeta())
-      signature = createSignature( meta.toByteArray(), irohaSigner )
+      signature = createSignature( meta.toByteArray(), irohaSignatory )
 }
 
-fun Transaction.Builder.sign (irohaSigner : IrohaSigner) 
+fun Transaction.Builder.sign (irohaSignatory : IrohaSignatory) 
 {  
    if (hasPayload())
-      addSignatures(createSignature( payload.toByteArray(), irohaSigner ))
+      addSignatures(createSignature( payload.toByteArray(), irohaSignatory ))
 }
 
 fun Transaction.hash () = if (hasPayload())

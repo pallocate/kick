@@ -3,7 +3,7 @@ package kick
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
-import pen.IrohaSigner
+import pen.IrohaSignatory
 import iroha.protocol.Endpoint.ToriiResponse
 import iroha.protocol.TxStatusRequest
 import iroha.protocol.TransactionOuterClass.Transaction
@@ -31,10 +31,10 @@ internal val HTML_HEAD_STYLE = """<html><head><style>
 """
 internal val END_BODY_HTML = "\n</body></html>"
 
-fun createSignature (bytes : ByteArray, irohaSigner : IrohaSigner) : Signature
+fun createSignature (bytes : ByteArray, irohaSignatory : IrohaSignatory) : Signature
 {
-   val publicKey = irohaSigner.publicKey()
-   val signature = irohaSigner.sign( bytes )
+   val publicKey = irohaSignatory.publicKey()
+   val signature = irohaSignatory.sign( bytes )
 
    return Signature
       .newBuilder()
