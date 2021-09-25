@@ -1,7 +1,7 @@
 package kick
 
 import kotlinx.coroutines.*
-import pen.newScope
+import pef.newScope
 import iroha.protocol.TransactionOuterClass.Transaction
 import iroha.protocol.Endpoint.TxList
 import iroha.protocol.TxList as txList

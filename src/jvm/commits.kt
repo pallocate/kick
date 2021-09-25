@@ -1,6 +1,6 @@
 package kick
 
-import pen.newScope
+import pef.newScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import iroha.protocol.TransactionOuterClass.Transaction

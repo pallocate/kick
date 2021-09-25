@@ -3,7 +3,7 @@ package kick
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
-import pen.IrohaSignatory
+import pef.IrohaSignatory
 import iroha.protocol.Endpoint.ToriiResponse
 import iroha.protocol.TxStatusRequest
 import iroha.protocol.TransactionOuterClass.Transaction

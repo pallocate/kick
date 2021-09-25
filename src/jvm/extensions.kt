@@ -1,8 +1,8 @@
 package kick
 
-import pen.toHex
-import pen.sha3Digest
-import pen.IrohaSignatory
+import pef.toHex
+import pef.sha3Digest
+import pef.IrohaSignatory
 import iroha.protocol.Commands.Command
 import iroha.protocol.Queries.Query
 import iroha.protocol.Queries.BlocksQuery
